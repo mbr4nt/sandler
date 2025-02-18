@@ -52,7 +52,9 @@ export async function findMatchingFiles(folderPath) {
  * @returns {Promise<void>} - A promise that resolves when processing is complete.
  */
 export async function processPair(fileKey, priceFile, productDataFile) {
-    return await processProduct(fileKey, priceFile, productDataFile);
+    const result = await processProduct(fileKey, priceFile, productDataFile);
+    console.log("result", result);
+    return result;
 }
 
 /**
@@ -61,15 +63,19 @@ export async function processPair(fileKey, priceFile, productDataFile) {
  * @returns {Promise<void>} - A promise that resolves when all pairs have been processed.
  */
 export async function processFolder(folderPath) {
+    let models = [];
     try {
         const pairs = await findMatchingFiles(folderPath);
 
         // Process each pair sequentially
         for (const pair of pairs) {
-            await processPair(pair.fileKey, pair.priceFile, pair.productDataFile);
+            const result = await processPair(pair.fileKey, pair.priceFile, pair.productDataFile);
+            console.log("resultxx", result);
+            models = models.concat(result);
         }
 
-        console.log('All pairs processed successfully.');
+        console.log('All pairs processed successfully.', models);
+        return models;
     } catch (error) {
         console.error(`Error processing folder: ${error.message}`);
     }

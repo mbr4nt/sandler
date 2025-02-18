@@ -9,6 +9,8 @@ export async function processProduct(fileKey, priceFile, productDataFile) {
     const csv = await parseProduct(productDataFile);
     const row = csv[0];
     const prices = await parsePrice(priceFile);
+
+    let products = [];
     
     for (const price of prices) {
         const model = `${row.ItemNumber}:${price.uid}`;
@@ -20,8 +22,10 @@ export async function processProduct(fileKey, priceFile, productDataFile) {
             price: price.amount,
             features: processFeatures(model, price.options),
         }
+        products.push(product);
         saveJson(`./processed/products/${row.ItemNumber}-${price.uid}.json`, product);
     }
+    return products;
 }
 
 function processFeatures(model, options) {
