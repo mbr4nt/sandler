@@ -1,0 +1,26 @@
+{
+  "fileKey": "ESCALAS 0040",
+  "uid": "326418",
+  "name": "ESCALAS 0040",
+  "description": "Epoxy coated frame for sofa - 320 x 80cm / 126\" x 31.5\"",
+  "price": [
+    {
+      "uid": "SPC-000853",
+      "product": "ESCALAS 0040",
+      "currency": "USD",
+      "amount": 3350,
+      "options": [
+        "Frame-SO1105"
+      ]
+    },
+    {
+      "uid": "SPC-000854",
+      "product": "ESCALAS 0040",
+      "currency": "USD",
+      "amount": 3680,
+      "options": [
+        "Frame-SO1106"
+      ]
+    }
+  ]
+}
