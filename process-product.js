@@ -14,6 +14,7 @@ export async function processProduct(fileKey, priceFile, productDataFile) {
         const model = `${row.ItemNumber}:${price.uid}`;
         const product = {
             model,	
+            path: `${row.collection}/${row.range}/${row.ItemNumber}`,
             name: row.ItemNumber,
             description: row.Description,
             price: price.amount,
@@ -29,7 +30,15 @@ function processFeatures(model, options) {
         const [name, value] = option.split("-");
         features.push({
             key: `${model}-${option}`,
-            name
+            name,
+            options: [ ///TODO: this is fake
+                {
+                    "key": "WL",
+                    "name": "Wood grain plastic laminate",
+                    "upcharge": 0,
+                    "features": []
+                }
+            ]
         });
     }
     return features;
