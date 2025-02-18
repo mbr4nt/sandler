@@ -6,18 +6,31 @@ export async function processProduct(fileKey, priceFile, productDataFile) {
     // Implement your logic here
     console.log(`Processing pair for key "${fileKey}": ${priceFile} and ${productDataFile}`);
     
-    let csv = await parseProduct(productDataFile);
-    csv = csv[0];
-    console.log(csv);
-
-    const product = {
-        fileKey,
-        uid: csv.id,
-        name: csv.ItemNumber,
-        description: csv.Description,
-        price: await parsePrice(priceFile)
+    const csv = await parseProduct(productDataFile);
+    const row = csv[0];
+    const prices = await parsePrice(priceFile);
+    
+    for (const price of prices) {
+        const model = `${row.ItemNumber}:${price.uid}`;
+        const product = {
+            model,	
+            name: row.ItemNumber,
+            description: row.Description,
+            price: price.amount,
+            features: processFeatures(model, price.options),
+        }
+        saveJson(`./processed/products/${row.ItemNumber}-${price.uid}.json`, product);
     }
-    saveJson(`./processed/products/${fileKey}.json`, product);
+}
 
-
+function processFeatures(model, options) {
+    const features = [];
+    for (const option of options) {
+        const [name, value] = option.split("-");
+        features.push({
+            key: `${model}-${option}`,
+            name
+        });
+    }
+    return features;
 }
