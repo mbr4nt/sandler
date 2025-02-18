@@ -1,5 +1,4 @@
-import fs from 'fs/promises'; // Use fs/promises for async file operations
-import path from 'path';
+import saveFile from './save-file.js';
 
 /**
  * Saves a JSON object to a file.
@@ -11,14 +10,9 @@ export async function saveJson(filePath, jsonData) {
     try {
         // Convert the JSON object to a formatted string
         const jsonString = JSON.stringify(jsonData, null, 2); // 2 spaces for indentation
-        // Ensure the directory exists
-        const dir = path.dirname(filePath);
-        await fs.mkdir(dir, { recursive: true }); // Create directory if it doesn't exist
-        // Write the JSON string to the file
-        await fs.writeFile(filePath, jsonString, 'utf8');
+        await saveFile(jsonString, filePath);
         console.log(`JSON saved successfully to ${filePath}`);
     } catch (error) {
         console.error(`Error saving JSON to disk: ${error.message}`);
     }
 }
-

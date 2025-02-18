@@ -1,5 +1,5 @@
 import saveFile from './save-file.js'; // Assuming save-file.js is the async ES module from the previous example
-
+import { saveJson } from './save-json.js';
 const tab = '   ';
 
 export default async function exportToSif(catalog) {
@@ -127,12 +127,12 @@ async function generateFile1(catalog) {
         }
         map[path].push(product.model);
     }
-    content += buildHierarchy(paths, `SL=${tab}`, map);
+    content += await buildHierarchy(paths, `SL=${tab}`, map);
 
     await saveFile(content, filename);
 }
 
-function buildHierarchy(paths, prefix, map) {
+async function buildHierarchy(paths, prefix, map) {
     const hierarchy = {};
 
     paths.forEach(path => {
@@ -147,15 +147,17 @@ function buildHierarchy(paths, prefix, map) {
         });
     });
 
-    function formatHierarchy(obj, level = 0, path = "") {
-        if (Object.keys(obj).length > 0) {
+    await saveJson('./processed/hierarchy.json', hierarchy);
+
+    function formatHierarchy(obj, level = 0, path="") {
+        if(Object.keys(obj).length > 0) {
             let result = "";
             for (const key in obj) {
-                result += `${tab.repeat(level)}${key}\n`;
+                result += `SL=${tab}${tab.repeat(level)}${key}\n`;
                 result += formatHierarchy(obj[key], level + 1, `${path}${key}/`);
             }
-            if (result) return `${prefix}${result}`;
-            else return "";
+            if(result) return `${result}`;
+            else return "cu";
         }
         else return printPath(path);
     }
@@ -166,7 +168,6 @@ function buildHierarchy(paths, prefix, map) {
             path = path.substring(0, path.length - 1);
         }
         let models = map[path];
-        console.log(models);
         for (let model of models) {
             content += `PN=${model}\n`;
         }
