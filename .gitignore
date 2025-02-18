@@ -124,3 +124,5 @@ build/
 out/
 *.tmp
 *.bak
+
+processed/*
