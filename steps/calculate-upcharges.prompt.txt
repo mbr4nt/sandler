@@ -1,0 +1,64 @@
+We are writing file processing steps to go in a file processing pipeline.
+
+here's an example of a step, called doSomeWork:
+
+```js
+module.exports = async function doSomeWork(collection, range, product, readFile, writeFile) {
+    console.log(`doing work for ${collection}/${range}/${product}`);
+};
+
+```
+
+for context, here are some dependencies we already have installed: csv-parser
+
+the idea is to process product folders. use readFile to read input files and writeFile to write output ones.
+
+each product folder comes with:
+
+
+1. product_data.csv:
+
+```csv
+id,ItemNumber,Description,product_use_type,collection,range,SheaStacking,SheaStackingQuantity,SheaTrolleyStackingQuantity,SheaFolding,SheaFoldedHeight,SheaFoldedDepth,SheaItemAdjustableHeight,SheaItemOverallHeight,SheaItemMinOverallHeight,SheaItemMaxOverallHeight,ProductionConsumptionWidthConversionFactor,ProductionConsumptionDepthConversionFactor,SheaItemSeatHeight,SheaItemMinSeatHeight,SheaItemMaxSeatHeight,SheaItemArmHeight,SheaItemMinArmHeight,SheaItemMaxArmHeight,SheaCOMRequirement,SheaCOLRequirement,NetProductWeight,SheaCartonWeight,ProductVolume,PackingDutyQuantity,Frame,Shell
+326162,"ALTEA 2.0","Fully upholstered arm chair with 4-leg base. Greenguard Gold-certified to protect indoor air quality.","Chairs, Dining chairs, Greenguard, Guest Chairs",Inclass,Altea,No,,,No,0,0,No,81,0,0,64,59,42,0,0,66,0,0,1.7,0,10,12.5,0.35,1,"SO1103, SO1105, SO1106","SO1035, SO1039, SO1082, SO1084, SO1287"
+```
+
+2. prices.csv: 
+
+```csv
+@odata.etag,dataAreaId,RecordId,PriceApplicableFromDate,WillSearchContinue,SalesPriceQuantity,QuantityUnitySymbol,ProductNumber,AttributeBasedPricingId,ProductSizeId,ItemNumber,ProductVersionId,PriceCurrencyCode,ToQuantity,FixedPriceCharges,WillDeliveryDateControlDisregardLeadTime,PriceApplicableToDate,PriceWarehouseId,SalesLeadTimeDays,FromQuantity,CustomerAccountNumber,PriceCustomerGroupCode,Price,PriceSiteId,IsGenericCurrencySearchEnabled,ProductColorId,ProductconfigurationId,ProductStyleId,VERItemRelation,VERItemCode,VERProductConfigCombinationCode,VERProductConfigCombinationCodeFull,TranslatedStyleDescription
+"W/""JzEsNTYzNzM4MDU1NCc=""",inc,5637380554,2024-03-04T12:00:00Z,Yes,1,EACH,"ALTEA 2.0 :  : SPC-000655",,,"ALTEA 2.0",,USD,0,0,Yes,1900-01-01T12:00:00Z,,0,1,,Sandler,1990,,Yes,,,SPC-000655,"ALTEA 2.0",Table,Frame-SO1103/Shell-SO1035,Frame-SO1103-/Shell-SO1035-,"Arm chair on 4 leg base with chrome frame. Fully upholstered in Customer's Own Leather"
+"W/""JzEsNTYzNzM4MDU1NSc=""",inc,5637380555,2024-03-04T12:00:00Z,Yes,1,EACH,"ALTEA 2.0 :  : SPC-000656",,,"ALTEA 2.0",,USD,0,0,Yes,1900-01-01T12:00:00Z,,0,1,,Sandler,1820,,Yes,,,SPC-000656,"ALTEA 2.0",Table,Frame-SO1103/Shell-SO1039,Frame-SO1103-/Shell-SO1039-,"Arm chair on 4 leg base with chrome frame. Fully upholstered in Customer's Own Material"
+```
+
+
+3. characteristics.csv
+
+```csv
+ProductNumber,CharacteristicShortCode,OptionShortCode,OptionName,OptionStatus,CharacteristicFriendlyName,CharacteristicName,OptionFriendlyName,FinishShortCodes
+"ALTEA 2.0",Frame,SO1103,Inclass-CHR,Active,Frame,,Chrome,SF1940
+"ALTEA 2.0",Shell,SO1035,COL,Active,Shell,,COL,SF1170
+```
+
+we need to restructure the product pricing to use a base price and option upcharges.
+
+both base price and upcharges need to be multiple of 10.
+
+we need to go thru the prices.csv file and analyze the current prices, pick the lowest of them all and make it the base price.
+
+then, we need to look at the VERProductConfigCombinationCode to see what options the product has. this field contain values like this: Frame-SO1103/Shell-SO1035, which are each a list of option separated by slashes. we don't know how many options a product will have.
+
+what we want to do is to calculate an approximate upcharge for each of these options that, when summed to base price, would ammount to a value as close as possible to the old price.
+
+our goal is to disrupt the prices as little as possible while making it standardized under the new system.
+
+please write a module called calculateUpcharges that would output the same files as the input plus a upcharges.json file which would look like so:
+
+{
+    basePrice: 1610
+    upcharges: {
+        "Frame-SO1103": 100,
+        "Shell-SO1035": 200
+    }
+}
+

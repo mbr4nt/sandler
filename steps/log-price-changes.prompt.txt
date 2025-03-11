@@ -1,0 +1,48 @@
+We are writing file processing steps to go in a file processing pipeline.
+
+here's an example of a step, called doSomeWork:
+
+```js
+module.exports = async function doSomeWork(collection, range, product, readFile, writeFile) {
+    console.log(`doing work for ${collection}/${range}/${product}`);
+};
+
+```
+
+for context, here are some dependencies we already have installed: csv-parser
+
+the idea is to process product folders. use readFile to read input files and writeFile to write output ones. both these functions only expect the file name (without folder) as first param.
+
+each product folder comes with:
+
+
+1. prices.csv: 
+
+```csv
+@odata.etag,dataAreaId,RecordId,PriceApplicableFromDate,WillSearchContinue,SalesPriceQuantity,QuantityUnitySymbol,ProductNumber,AttributeBasedPricingId,ProductSizeId,ItemNumber,ProductVersionId,PriceCurrencyCode,ToQuantity,FixedPriceCharges,WillDeliveryDateControlDisregardLeadTime,PriceApplicableToDate,PriceWarehouseId,SalesLeadTimeDays,FromQuantity,CustomerAccountNumber,PriceCustomerGroupCode,Price,PriceSiteId,IsGenericCurrencySearchEnabled,ProductColorId,ProductconfigurationId,ProductStyleId,VERItemRelation,VERItemCode,VERProductConfigCombinationCode,VERProductConfigCombinationCodeFull,TranslatedStyleDescription
+"W/""JzEsNTYzNzM4MDU1NCc=""",inc,5637380554,2024-03-04T12:00:00Z,Yes,1,EACH,"ALTEA 2.0 :  : SPC-000655",,,"ALTEA 2.0",,USD,0,0,Yes,1900-01-01T12:00:00Z,,0,1,,Sandler,1990,,Yes,,,SPC-000655,"ALTEA 2.0",Table,Frame-SO1103/Shell-SO1035,Frame-SO1103-/Shell-SO1035-,"Arm chair on 4 leg base with chrome frame. Fully upholstered in Customer's Own Leather"
+"W/""JzEsNTYzNzM4MDU1NSc=""",inc,5637380555,2024-03-04T12:00:00Z,Yes,1,EACH,"ALTEA 2.0 :  : SPC-000656",,,"ALTEA 2.0",,USD,0,0,Yes,1900-01-01T12:00:00Z,,0,1,,Sandler,1820,,Yes,,,SPC-000656,"ALTEA 2.0",Table,Frame-SO1103/Shell-SO1039,Frame-SO1103-/Shell-SO1039-,"Arm chair on 4 leg base with chrome frame. Fully upholstered in Customer's Own Material"
+```
+
+
+2. upcharges.json
+
+```json
+{
+  "basePrice": 1610,
+  "upcharges": {
+    "Frame-SO1103": 210,
+    "Frame-SO1105": 0,
+    "Frame-SO1106": 100,
+    "Shell-SO1035": 180,
+    "Shell-SO1039": 0,
+    "Shell-SO1082": 280,
+    "Shell-SO1084": 460,
+    "Shell-SO1287": 1130
+  }
+}
+```
+
+please write a module that would get the list of prices then for each line recalculate the price using the new pricing logic in upcharges.json and then output a file "price-updates.csv" that would include ProductStyleId, oldPrice, newPrice and difference. only include rows that have price change, only output the file if there are any changes.
+
+

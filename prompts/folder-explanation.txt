@@ -1,0 +1,19 @@
+we have an nodejs app that processes an input folder structure like this:
+
+collection/range/product/*
+
+we want to write a nodejs module that will take in the root input folder path then traverse it to find each product folder and process it.
+
+the processProduct function will be passed to the module as an argument.
+
+it's signature is as follows:
+
+function processProduct(collection, range, product, files, writeFile)
+
+files is a list of file paths that you find in the folder.
+
+we'll run this function against each product and recreate the same folder structure of input in a given output folder. but instead of having the same files, we'll let the function implementation write any files they want by using the writeFile function we'll provide.
+
+writeFunction will take simple a file name (without folder) and an object which we'll serialize as json, formatted with tabs. the function needs to know which folder to write the contents to based on the replacation of the structure of the input folder.
+
+can you please write the processFolder module?

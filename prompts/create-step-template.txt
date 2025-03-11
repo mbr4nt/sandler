@@ -1,0 +1,73 @@
+We are writing file processing steps to go in a file processing pipeline.
+
+here's an example of a step, called doSomeWork:
+
+```js
+module.exports = async function doSomeWork(collection, range, product, readFile, writeFile) {
+    console.log(`doing work for ${collection}/${range}/${product}`);
+};
+
+```
+
+for context, here are some dependencies we already have installed: csv-parser
+
+the idea is to process product folders. use readFile to read input files and writeFile to write output ones.
+
+each product folder comes with:
+
+
+1. upcharges.json:
+
+```json
+{
+  "basePrice": 1610,
+  "upcharges": {
+    "Frame-SO1103": 210,
+    "Frame-SO1105": 0,
+    "Frame-SO1106": 100,
+    "Shell-SO1035": 180,
+    "Shell-SO1039": 0,
+    "Shell-SO1082": 280,
+    "Shell-SO1084": 460,
+    "Shell-SO1287": 1130
+  }
+}```
+
+2. characteristics.csv
+
+```csv
+ProductNumber,CharacteristicShortCode,OptionShortCode,OptionName,OptionStatus,CharacteristicFriendlyName,CharacteristicName,OptionFriendlyName,FinishShortCodes
+"ALTEA 2.0",Frame,SO1103,Inclass-CHR,Active,Frame,,Chrome,SF1940
+"ALTEA 2.0",Shell,SO1035,COL,Active,Shell,,COL,SF1170
+"ALTEA 2.0",Frame,SO1105,Inclass-EPX,Active,Frame,,"Epoxy Standard Colors","SF1943, SF1944, SF1945"
+```
+
+we need a module to take this information and format it into an array feature objects.
+
+each feature objects look like this:
+
+{
+      "key": "ALTEA 2.0-Frame", //product, CharacteristicShortCode
+      "name": "Frame", //CharacteristicFriendlyName
+      "options": [ //list of options, one for each thing that starts with the prefix, like "Frame"
+        {
+          "key": "Frame-SO1103", //CharacteristicShortCode and OptionShortCode
+          "name": "Wood grain plastic laminate", //OptionFriendlyName
+          "upcharge": 0, //from upcharges.json
+          "features": [ //one single feature for each
+            {
+              "key": "ALTEA 2.0-Frame-SO1103", //product, CharacteristicShortCode and OptionShortCode
+              "name": "ALTEA 2.0-Wood grain plastic laminate", //product, OptionFriendlyName
+              "options": [ //for each item in FinishShortCodes, which is a list separate by commas
+                {
+                  "key": "SF1940",
+                  "name": "name here", //call a function we'll write, named getFinishName(finishCode) where finishCode is the key
+                }
+              ]
+              
+            }
+          ]
+        }
+      ]
+    }
+

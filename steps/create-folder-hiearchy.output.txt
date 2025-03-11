@@ -1,0 +1,27 @@
+The output folder structure organizes files into a hierarchical layout as ${collection}/${range}/${ItemNumber}/, placing product_data.csv, prices.csv, and characteristics.csv inside the ${ItemNumber} folder based on data extracted from product_data.csv.
+
+Here are short examples for each of the file formats (product_data.csv, prices.csv, and characteristics.csv):
+
+1. product_data.csv:
+
+```csv
+id,ItemNumber,Description,product_use_type,collection,range,SheaStacking,SheaStackingQuantity,SheaTrolleyStackingQuantity,SheaFolding,SheaFoldedHeight,SheaFoldedDepth,SheaItemAdjustableHeight,SheaItemOverallHeight,SheaItemMinOverallHeight,SheaItemMaxOverallHeight,ProductionConsumptionWidthConversionFactor,ProductionConsumptionDepthConversionFactor,SheaItemSeatHeight,SheaItemMinSeatHeight,SheaItemMaxSeatHeight,SheaItemArmHeight,SheaItemMinArmHeight,SheaItemMaxArmHeight,SheaCOMRequirement,SheaCOLRequirement,NetProductWeight,SheaCartonWeight,ProductVolume,PackingDutyQuantity,Frame,Shell
+326162,"ALTEA 2.0","Fully upholstered arm chair with 4-leg base. Greenguard Gold-certified to protect indoor air quality.","Chairs, Dining chairs, Greenguard, Guest Chairs",Inclass,Altea,No,,,No,0,0,No,81,0,0,64,59,42,0,0,66,0,0,1.7,0,10,12.5,0.35,1,"SO1103, SO1105, SO1106","SO1035, SO1039, SO1082, SO1084, SO1287"
+```
+
+2. prices.csv: 
+
+```csv
+@odata.etag,dataAreaId,RecordId,PriceApplicableFromDate,WillSearchContinue,SalesPriceQuantity,QuantityUnitySymbol,ProductNumber,AttributeBasedPricingId,ProductSizeId,ItemNumber,ProductVersionId,PriceCurrencyCode,ToQuantity,FixedPriceCharges,WillDeliveryDateControlDisregardLeadTime,PriceApplicableToDate,PriceWarehouseId,SalesLeadTimeDays,FromQuantity,CustomerAccountNumber,PriceCustomerGroupCode,Price,PriceSiteId,IsGenericCurrencySearchEnabled,ProductColorId,ProductconfigurationId,ProductStyleId,VERItemRelation,VERItemCode,VERProductConfigCombinationCode,VERProductConfigCombinationCodeFull,TranslatedStyleDescription
+"W/""JzEsNTYzNzM4MDU1NCc=""",inc,5637380554,2024-03-04T12:00:00Z,Yes,1,EACH,"ALTEA 2.0 :  : SPC-000655",,,"ALTEA 2.0",,USD,0,0,Yes,1900-01-01T12:00:00Z,,0,1,,Sandler,1990,,Yes,,,SPC-000655,"ALTEA 2.0",Table,Frame-SO1103/Shell-SO1035,Frame-SO1103-/Shell-SO1035-,"Arm chair on 4 leg base with chrome frame. Fully upholstered in Customer's Own Leather"
+"W/""JzEsNTYzNzM4MDU1NSc=""",inc,5637380555,2024-03-04T12:00:00Z,Yes,1,EACH,"ALTEA 2.0 :  : SPC-000656",,,"ALTEA 2.0",,USD,0,0,Yes,1900-01-01T12:00:00Z,,0,1,,Sandler,1820,,Yes,,,SPC-000656,"ALTEA 2.0",Table,Frame-SO1103/Shell-SO1039,Frame-SO1103-/Shell-SO1039-,"Arm chair on 4 leg base with chrome frame. Fully upholstered in Customer's Own Material"
+```
+
+
+3. characteristics.csv
+
+```csv
+ProductNumber,CharacteristicShortCode,OptionShortCode,OptionName,OptionStatus,CharacteristicFriendlyName,CharacteristicName,OptionFriendlyName,FinishShortCodes
+"ALTEA 2.0",Frame,SO1103,Inclass-CHR,Active,Frame,,Chrome,SF1940
+"ALTEA 2.0",Shell,SO1035,COL,Active,Shell,,COL,SF1170
+```

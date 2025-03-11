@@ -1,0 +1,58 @@
+We are writing file processing steps to go in a file processing pipeline.
+
+here's an example of a step, called doSomeWork:
+
+```js
+
+const fs = require('fs');
+const path = require('path');
+
+module.exports = async function doSomeWork(inputDir, outputDir) {
+  // Read files from the input directory
+  const files = fs.readdirSync(inputDir);
+
+  // Process each file
+  for (const file of files) {
+    const inputFilePath = path.join(inputDir, file);
+    const outputFilePath = path.join(outputDir, file);
+
+    // Example: Copy the file to the output directory
+    fs.copyFileSync(inputFilePath, outputFilePath);
+
+    console.log(`Processed: ${file}`);
+  }
+
+  console.log('Step 1 completed.');
+};
+
+```
+
+for context, here are some dependencies we already have installed: csv-parser
+
+the idea is to receive files from an inputDir, do something and then output files to an output dir.
+
+We'll write a step to scan the input folder and organize the files in a specific folder structure.
+
+we won't be concerned about the existing folder structure, we'll scan all traverse all subfolders of input and make a map of all file names.
+
+then we will group the files using naming convention. the groups are composed by 4 files:
+- ${product-key}_characteristics.csv,
+- ${product-key}_prices.csv,
+- ${product-key}_product_data.csv
+
+these names don't match in case, we need to group them using case-insensitive logic
+
+product_data is especially interesting to us, because it contains the info we need to organize them. it's a csv, here's the example of one:
+
+```csv
+id,ItemNumber,Description,product_use_type,collection,range,SheaStacking,SheaStackingQuantity,SheaTrolleyStackingQuantity,SheaFolding,SheaFoldedHeight,SheaFoldedDepth,SheaItemAdjustableHeight,SheaItemOverallHeight,SheaItemMinOverallHeight,SheaItemMaxOverallHeight,ProductionConsumptionWidthConversionFactor,ProductionConsumptionDepthConversionFactor,SheaItemSeatHeight,SheaItemMinSeatHeight,SheaItemMaxSeatHeight,SheaItemArmHeight,SheaItemMinArmHeight,SheaItemMaxArmHeight,SheaCOMRequirement,SheaCOLRequirement,NetProductWeight,SheaCartonWeight,ProductVolume,PackingDutyQuantity,Shell,Base
+326168,"ALTEA 2.6ST","Fully upholstered arm chair with 5-spoke polished aluminum base on casters. Height adjustable, with swivel.Tilting mechanism with tension adjustment. Seat can be tilted to an angle of up to 16°.Greenguard Gold-certified to protect indoor air quality.","Chairs, Greenguard, Guest Chairs, Task Chairs",Inclass,Altea,No,,,No,0,0,Yes,0,78,85,70,70,0,44,51,0,62,69,1.7,0,18.5,20.9,0.28,1,"SO1035, SO1039, SO1082, SO1084, SO1287",SO1119
+```
+
+we want the output folder structure to look like this:
+
+${collection}/${range}/${ItemNumber}/prices.csv
+${collection}/${range}/${ItemNumber}/characteristics.csv
+${collection}/${range}/${ItemNumber}/product_data.csv
+
+can you please write the createFolderHierarchy module?
