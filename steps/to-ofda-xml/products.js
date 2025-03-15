@@ -69,7 +69,7 @@ function jsonToXml(json) {
             MirrorAngleOfSymmetry: 90, // Hardcoded as per example
             Features: {
                 $: { Sequence: 1 },
-                FeatureRef: json.features[0],
+                FeatureRef: json.features,
             },
             ProductPropertyVisibility: 1, // Hardcoded as per example
         },
