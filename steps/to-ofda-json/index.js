@@ -2,6 +2,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const processFolder = require('../../processFolder.js');
 const forEachProduct = require('../../forEachProduct.js');
+const outputProduct = require('./outputProduct.js');
 
 
 
@@ -25,7 +26,6 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
                 }
             }
 
-            console.log(`Writing ${safeName}.json`);
             let featureOutput = {
                 "code": feature.key,
                 "description": feature.name,
@@ -45,6 +45,7 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
         }
 
         const encoreData = JSON.parse(await readFile('encore.json'));
+        await outputProduct(encoreData, outputDir);
         for (feature of encoreData.features) {
             await processFeature(feature);
         }

@@ -2,7 +2,7 @@ const process = require('./process.js');
 const path = require('path');
 const fs = require('fs').promises;
 
-module.exports = async function toOfdaJson(inputDir, outputDir) {
+module.exports = async function toOfdaXml(inputDir, outputDir) {
 
     const templatePath = path.join(__dirname, 'root.xml');
     const dataRoot = inputDir;

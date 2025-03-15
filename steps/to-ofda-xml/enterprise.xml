@@ -10,6 +10,7 @@
         <Name Language="en-US">${context.enterprise.vendor.name}</Name>
         <Description Language="en-US">${context.enterprise.vendor.description}</Description>
         ${features(context)}
+        ${products(context)}
     </Vendor>
     ${materials(context)}
 </Enterprise>
