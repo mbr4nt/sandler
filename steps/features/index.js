@@ -80,7 +80,7 @@ function processCharacteristics(characteristics, upcharges, product) {
             options: FinishShortCodes ? FinishShortCodes.split(',').map(code => ({
                 key: code.trim(),
                 name: getFinishName(code.trim()),
-                material: code
+                material: code.trim()
             })) : []
         };
 

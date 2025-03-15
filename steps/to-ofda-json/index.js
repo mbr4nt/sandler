@@ -18,6 +18,11 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
                 for (subFeature of option.features) {
                     processFeature(subFeature);
                 }
+
+                //if option has material, create a file ${option.material}.json with { "code": option.material }
+                if(option.material) {
+                    await writeOutputFile(`materials/${makeSafeFileName(option.material)}.json`, JSON.stringify({ "code": option.material }, null, 2));
+                }
             }
 
             console.log(`Writing ${safeName}.json`);
@@ -55,7 +60,6 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
 
             // Write the file
             await fs.writeFile(filePath, data, 'utf8');
-            console.log(`File ${fileName} written successfully.`);
         } catch (error) {
             console.error(`Error writing file ${fileName}:`, error);
             throw error; // Re-throw the error if you want calling code to handle it
