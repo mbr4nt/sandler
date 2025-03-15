@@ -8,7 +8,7 @@
     <EnterpriseNotes>
         <EnterpriseRef>${context.enterprise.code}</EnterpriseRef>
     </EnterpriseNotes>
-    <TableOfContents />
+    ${tableOfContents(context)}
     <PriceListFilter>
         <PriceListRef Default="1">P1</PriceListRef>
     </PriceListFilter>

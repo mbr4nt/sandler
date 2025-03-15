@@ -3,11 +3,13 @@ const path = require('path');
 const processFolder = require('../../processFolder.js');
 const forEachProduct = require('../../forEachProduct.js');
 const outputProduct = require('./outputProduct.js');
+const outputToC = require('./outputToC.js');
 
 
 
 module.exports = async function toOfdaJson(inputDir, outputDir) {
     const catalogCode = "SIC";
+    const toc = [];
 
     async function processProduct(collection, range, product, readFile, writeFile) {
 
@@ -45,6 +47,8 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
         }
 
         const encoreData = JSON.parse(await readFile('encore.json'));
+        toc.push({ "partNumber": encoreData.partNumber, "path": encoreData.path });
+
         await outputProduct(encoreData, outputDir);
         for (feature of encoreData.features) {
             await processFeature(feature);
@@ -96,9 +100,11 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
         "resourcesPath": "c:\\temp"
     };
     writeOutputFile(`index.json`, JSON.stringify(indexData, null, 2));
-
+    
+    
     const productStep = forEachProduct(processProduct);
     await productStep(inputDir, outputDir);
+    await outputToC(toc, outputDir);
 }
 
 function makeSafeFileName(input) {
