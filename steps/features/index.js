@@ -59,6 +59,7 @@ function processCharacteristics(characteristics, upcharges, product) {
             featuresMap.set(featureKey, {
                 key: featureKey,
                 name: CharacteristicFriendlyName || CharacteristicName,
+                groupCode: CharacteristicFriendlyName || CharacteristicName,
                 options: []
             });
         }
