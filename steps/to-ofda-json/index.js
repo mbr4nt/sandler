@@ -19,7 +19,7 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
 
             for (option of feature.options) {
                 for (subFeature of option.features) {
-                    processFeature(subFeature);
+                    await processFeature(subFeature);
                 }
 
                 //if option has material, create a file ${option.material}.json with { "code": option.material }
@@ -99,7 +99,7 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
         ],
         "resourcesPath": "c:\\temp"
     };
-    writeOutputFile(`index.json`, JSON.stringify(indexData, null, 2));
+    await writeOutputFile(`index.json`, JSON.stringify(indexData, null, 2));
     
     
     const productStep = forEachProduct(processProduct);

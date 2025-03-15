@@ -12,21 +12,21 @@ module.exports = async function(context) {
     //read every json file
     const files = await fs.readdir(featuresFolder);
 
-    //loop
     for (const file of files) {
-        
-        ///only read json files
-        if (!file.endsWith('.json')) continue;
-
-        const filePath = path.join(featuresFolder, file);
-        const data = await fs.readFile(filePath, 'utf8');
-        const feature = JSON.parse(data);
-        feature.defaultOption = getDefaultOption(feature);
-        if(!feature.materialApplicationArea) feature.materialApplicationArea = ''; //avoiding undefined
-        xml += await process(template, feature);
-
-        //add a line break
-        xml += '\n';
+        try {
+            if (!file.endsWith('.json')) continue;
+    
+            const filePath = path.join(featuresFolder, file);
+            const data = await fs.readFile(filePath, 'utf8');
+            const feature = JSON.parse(data);
+            feature.defaultOption = await getDefaultOption(feature);
+            if (!feature.materialApplicationArea) feature.materialApplicationArea = '';
+            console.log('feature:', feature.code);
+            xml += await process(template, feature);
+            xml += '\n';
+        } catch (error) {
+            console.error(`Error processing file ${file}:`, error);
+        }
     }
     return xml;
 }

@@ -3,9 +3,7 @@
     <Range>
     </Range>
     <Description Language="en-US">${context.description}</Description>
-    <MaterialApplication>
-        <MaterialRef>${context.material}</MaterialRef>
-    </MaterialApplication>
+    ${materialApplication(context)}
     <Features Sequence="1">
         ${subFeatures(context)}
     </Features>
