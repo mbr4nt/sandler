@@ -1,0 +1,11 @@
+<PriceList>
+    <Code>${context.code}</Code>
+    <Currency>${context.currency}</Currency>
+    <Description Language="en-US">${context.description}</Description>
+    <CurrencyExchangeRate>
+        <PriceFactor>
+            <Value>1</Value>
+            <RoundingRule>2</RoundingRule>
+        </PriceFactor>
+    </CurrencyExchangeRate>
+</PriceList>

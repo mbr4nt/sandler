@@ -9,6 +9,8 @@ const steps = [
     forEachProduct(require('./steps/log-price-changes')),
     forEachProduct(require('./steps/features')),
     forEachProduct(require('./steps/to-encore')),
+    require('./steps/to-ofda-json'),
+    require('./steps/to-ofda-xml'),
 ];
 
 // Define input and output base directories

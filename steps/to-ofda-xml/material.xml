@@ -1,0 +1,11 @@
+<Material>
+    <Code>${context.code}</Code>
+    <Description Language="en-US">${context.description}</Description>
+    <MaterialExternalReference>
+        <FileURI>${context.uri}</FileURI>
+        <Usage>
+            <Type>SwatchImage</Type>
+            <Quality>Medium</Quality>
+        </Usage>
+    </MaterialExternalReference>
+</Material>

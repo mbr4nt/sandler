@@ -32,7 +32,7 @@ module.exports = async function toEncore(collection, range, partNumber, readFile
 
     // Generate safe filename and write output
     const fileName = generateSafeFilename(product.ItemNumber);
-    await writeFile(`${fileName}.encore.json`, JSON.stringify(encoreData, null, 2));
+    await writeFile(`encore.json`, JSON.stringify(encoreData, null, 2));
 
   } catch (error) {
     console.error(`Error processing product "${partNumber}":`, error);

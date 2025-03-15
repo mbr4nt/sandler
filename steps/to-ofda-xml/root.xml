@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema xmlns:ofda="http://www.ofdaxml.org" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ofdaxml.org/schema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="01.00.00">
+    <Envelope SchemaVersion="01.04.00">
+        <VersionPolicy>
+            <Purpose>extensions</Purpose>
+        </VersionPolicy>
+        <VersionPolicy>
+            <Purpose>packages</Purpose>
+        </VersionPolicy>
+        <ExternalReference>
+            <Usage>
+                <Type>CETTexturesDir</Type>
+                <OtherType>${context.resourcesPath}</OtherType>
+            </Usage>
+            <Usage>
+                <Type>CETSymbolsDir</Type>
+                <OtherType>${context.resourcesPath}</OtherType>
+            </Usage>
+            <Usage>
+                <Type>CETThumbnailsDir</Type>
+                <OtherType>${context.resourcesPath}</OtherType>
+            </Usage>
+            <Usage>
+                <Type>CETMiscDir</Type>
+                <OtherType>${context.resourcesPath}</OtherType>
+            </Usage>
+            <Usage>
+                <Type>CETToolboxDir</Type>
+                <OtherType>${context.resourcesPath}</OtherType>
+            </Usage>
+            <Usage>
+                <Type>CETAnonymousDir</Type>
+                <OtherType>${context.resourcesPath}</OtherType>
+            </Usage>
+        </ExternalReference>
+        ${enterprise(context)}
+        ${catalog(context)}
+    </Envelope>
+</Schema>

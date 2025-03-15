@@ -1,0 +1,4 @@
+<OptionPrice>
+    <PriceListRef>${context.priceList}</PriceListRef>
+    <Value>${context.value}</Value>
+</OptionPrice>

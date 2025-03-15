@@ -1,0 +1,13 @@
+<Option Sequence="${context.sequence}">
+    <Code>${context.code}</Code>
+    <Range>
+    </Range>
+    <Description Language="en-US">${context.description}</Description>
+    <MaterialApplication>
+        <MaterialRef>${context.material}</MaterialRef>
+    </MaterialApplication>
+    <Features Sequence="1">
+        ${subFeatures(context)}
+    </Features>
+    ${optionPrices(context)}
+</Option>

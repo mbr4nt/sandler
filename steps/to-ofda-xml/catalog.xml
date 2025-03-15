@@ -1,0 +1,15 @@
+<Catalog Sequence="1">
+    <Code>${context.catalog.code}</Code>
+    <Version>
+        <Code>${context.catalog.version}</Code>
+    </Version>
+    <Description Language="en-US">${context.catalog.description}</Description>
+    <Name Language="en-US">${context.catalog.name}</Name>
+    <EnterpriseNotes>
+        <EnterpriseRef>${context.enterprise.code}</EnterpriseRef>
+    </EnterpriseNotes>
+    <TableOfContents />
+    <PriceListFilter>
+        <PriceListRef Default="1">P1</PriceListRef>
+    </PriceListFilter>
+</Catalog>            

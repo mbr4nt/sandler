@@ -1,0 +1,15 @@
+<Feature>
+    <Code>${context.code}</Code>
+    <DecimalPlaces>2</DecimalPlaces>
+    <DataType>Character</DataType>
+    <Description Language="en-US">${context.description}</Description>
+    <GroupCode>${context.groupCode}</GroupCode>
+    <MaterialApplication>
+        <ApplicationAreaRef>${context.materialApplicationArea}</ApplicationAreaRef>
+    </MaterialApplication>
+    <InvOptsVisibility>0</InvOptsVisibility>
+    <FeaturePropertyVisibility>1</FeaturePropertyVisibility>
+    <SyncOptionDirection>0</SyncOptionDirection>
+    <DefaultOptionRef>${context.defaultOption}</DefaultOptionRef>
+    ${options(context)}
+</Feature>

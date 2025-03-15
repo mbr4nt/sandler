@@ -1,0 +1,15 @@
+<Enterprise>
+    <Code>${context.enterprise.code}</Code>
+    <Name Language="en-US">${context.enterprise.name}</Name>
+    <Description Language="en-US">${context.enterprise.description}</Description>
+    <UnitMeasure>IN</UnitMeasure>
+    <ConstraintsEnabled>0</ConstraintsEnabled>
+    ${priceLists(context)}
+    <Vendor>
+        <Code>${context.enterprise.vendor.code}</Code>
+        <Name Language="en-US">${context.enterprise.vendor.name}</Name>
+        <Description Language="en-US">${context.enterprise.vendor.description}</Description>
+        ${features(context)}
+    </Vendor>
+    ${materials(context)}
+</Enterprise>
