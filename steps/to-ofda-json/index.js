@@ -24,15 +24,17 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
             let featureOutput = {
                 "code": feature.key,
                 "description": feature.name,
-                "groupCode": feature.name,
-                "upcharges": [
+                "groupCode": feature.groupCode,
+                "options": formatOptions(feature)
+            };
+            if(feature.upchage) {
+                featureOutput.upcharges = [
                     {
                         "priceList": "P1",
                         "value": feature.upcharge
                     }
-                ],
-                "options": formatOptions(feature)
-            };
+                ];
+            }
 
             await writeOutputFile(`features/${safeName}.json`, JSON.stringify(featureOutput, null, 2));
         }
@@ -111,10 +113,14 @@ function makeSafeFileName(input) {
 
 function formatOptions(feature) {
     return feature.options.map(option => {
-        return {
+        let optionOutput = {
             "code": option.key,
             "description": option.name,
             "subFeatures": option.features.map(subFeature => subFeature.key)
+        };
+        if(option.material) {
+            optionOutput.material = option.material;
         }
+        return optionOutput;
     });
 }

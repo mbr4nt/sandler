@@ -72,12 +72,15 @@ function processCharacteristics(characteristics, upcharges, product) {
         };
 
         const featureOptionKey = `${product}-${CharacteristicShortCode}-${OptionShortCode}`;
+        const groupCode = OptionFriendlyName || OptionName;
         const featureOption = {
             key: featureOptionKey,
-            name: `${product}-${OptionFriendlyName || OptionName}`,
+            name: `${product}-${groupCode}`,
+            groupCode,
             options: FinishShortCodes ? FinishShortCodes.split(',').map(code => ({
                 key: code.trim(),
-                name: getFinishName(code.trim())
+                name: getFinishName(code.trim()),
+                material: code
             })) : []
         };
 

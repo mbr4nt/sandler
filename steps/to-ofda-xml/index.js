@@ -14,7 +14,4 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
     //save to ./output/GLS.xml
     const outputPath = path.join(outputDir, 'SIC.xml');
     await fs.writeFile(outputPath, result);
-
-    console.log(result);
-
 }
