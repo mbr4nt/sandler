@@ -25,7 +25,7 @@ module.exports = async function toEncore(collection, range, partNumber, readFile
       partNumber: product.ItemNumber,
       description: product.Description,
       price: upcharges.basePrice, // Directly use base price from upcharges.json
-      geometry: createGeometry(),
+      geometry: createGeometry(product.ItemNumber),
       props: extractProductProps(product),
       features: processFeatures(product, features)
     };
@@ -128,8 +128,23 @@ function extractProductProps(product) {
   }, {});
 }
 
-function createGeometry() {
-  return { fileName: '', layers: [] };
+function createGeometry(partNumber) {
+  return { fileName: `${makeSafeFileName(partNumber)}.cm3d`, layers: [] };
+}
+
+function makeSafeFileName(input) {
+  // Replace invalid characters with an underscore
+  const safeName = input.replace(/[<>:"/\\|?*]+/g, '_');
+
+  // Remove leading and trailing spaces
+  const trimmedName = safeName.trim();
+
+  // Ensure the name is not empty
+  if (!trimmedName) {
+      throw new Error('The resulting file name is empty after sanitization.');
+  }
+
+  return trimmedName;
 }
 
 function generateSafeFilename(partNumber) {
