@@ -11,6 +11,7 @@ const steps = [
     forEachProduct(require('./steps/find-dwg')),
     forEachProduct(require('./steps/to-encore')),
     require('./steps/to-ofda-json'),
+    require('./steps/group-fabrics'),
     require('./steps/to-ofda-xml'),
 ];
 
@@ -29,18 +30,37 @@ function wipeOutputDirectory() {
 }
 
 // Function to run the pipeline
-async function runPipeline() {
-  // Wipe the output directory before starting
-  wipeOutputDirectory();
+async function runPipeline(startFromStep) {
+  
+  let maySkip = startFromStep != null;
+
+  if(!maySkip) {
+    // Wipe the output directory before starting
+    wipeOutputDirectory();
+  }
 
   let currentInputDir = inputDir;
+
 
   for (let i = 0; i < steps.length; i++) {
     const step = steps[i];
     let stepName = `${i + 1}-${step.name}`; // e.g., "1-doSomeWork"
+    
     if(step.name == "productStep"){
       stepName = `${i + 1}-${step.getName()}`;
     }
+
+    let skip = false;
+
+    if(maySkip) {
+      if(`${i + 1}-${startFromStep}` == stepName){
+        maySkip = false;
+      }
+      else{
+        console.log(`Skipping step ${i + 1}: ${stepName}`);
+        skip = true;
+      }
+    }     
 
     const stepOutputDir = path.join(outputDir, stepName);
 
@@ -49,12 +69,14 @@ async function runPipeline() {
       fs.mkdirSync(stepOutputDir);
     }
 
-    console.log(`Running step ${i + 1}: ${step.name}`);
-    console.log(`Input: ${currentInputDir}`);
-    console.log(`Output: ${stepOutputDir}`);
-
-    // Execute the step
-    await step(currentInputDir, stepOutputDir);
+    if(!skip) {
+      console.log(`Running step ${i + 1}: ${step.name}`);
+      console.log(`Input: ${currentInputDir}`);
+      console.log(`Output: ${stepOutputDir}`);
+  
+      // Execute the step
+      await step(currentInputDir, stepOutputDir);
+    }
 
     // Update the input directory for the next step
     currentInputDir = stepOutputDir;
@@ -63,7 +85,8 @@ async function runPipeline() {
   console.log('Pipeline completed successfully!');
 }
 
+const startFromStep = "groupFabrics";
 // Run the pipeline
-runPipeline().catch((err) => {
+runPipeline(startFromStep).catch((err) => {
   console.error('Pipeline failed:', err);
 });
