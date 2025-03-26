@@ -1,0 +1,5 @@
+<ApplicationArea>
+    <Code>${context.code}</Code>
+    <SurfaceIdentifier>${context.surfaceIdentifier}</SurfaceIdentifier>
+    <MaterialRef>${context.material}</MaterialRef>
+</ApplicationArea>

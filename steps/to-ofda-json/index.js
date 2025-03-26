@@ -101,7 +101,7 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
                 "description": "Price List 1"
             }
         ],
-        "resourcesPath": "c:\\temp"
+        "resourcesPath": path.join(__dirname, '../../input/resources/'),
     };
     await writeOutputFile(`index.json`, JSON.stringify(indexData, null, 2));
     

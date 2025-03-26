@@ -13,6 +13,7 @@ const steps = [
     require('./steps/to-ofda-json'),
     require('./steps/group-fabrics'),
     require('./steps/add-undecided'),
+    require('./steps/application-areas'),
     require('./steps/to-ofda-xml'),
 ];
 
@@ -86,8 +87,8 @@ async function runPipeline(startFromStep) {
   console.log('Pipeline completed successfully!');
 }
 
-// const startFromStep = "addUndecided";
-const startFromStep = null;
+const startFromStep = "toOfdaJson";
+// const startFromStep = null;
 // Run the pipeline
 runPipeline(startFromStep).catch((err) => {
   console.error('Pipeline failed:', err);

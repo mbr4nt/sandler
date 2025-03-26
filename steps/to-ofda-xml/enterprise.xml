@@ -13,4 +13,5 @@
         ${products(context)}
     </Vendor>
     ${materials(context)}
+    ${applicationAreas(context)}
 </Enterprise>
