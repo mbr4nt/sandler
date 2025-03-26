@@ -72,25 +72,16 @@ async function readUpchargesData(readFile) {
 // Feature processor
 function processFeatures(product, features) {
   const result = [];
-  
-  // Process Frame features
-  const frameFeature = features.find(f => f.name === 'Frame');
-  if (frameFeature && product.Frame) {
-    const frameOptions = processOptions(frameFeature, product.Frame);
-    if (frameOptions) result.push(frameOptions);
-  }
 
-  // Process Shell features
-  const shellFeature = features.find(f => f.name === 'Shell');
-  if (shellFeature && product.Shell) {
-    const shellOptions = processOptions(shellFeature, product.Shell);
-    if (shellOptions) result.push(shellOptions);
+  for(const feature of features) {
+    const featureOptions = processOptions(feature, product[feature.name]);
+    if (featureOptions) result.push(featureOptions);
   }
-
   return result;
 }
 
 function processOptions(feature, productValues) {
+  if (!productValues) return null;
   const values = productValues.split(',').map(v => v.trim());
   const matchedOptions = feature.options.filter(option => 
     values.some(value => option.key.endsWith(`-${value}`))

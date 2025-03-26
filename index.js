@@ -87,8 +87,8 @@ async function runPipeline(startFromStep) {
   console.log('Pipeline completed successfully!');
 }
 
-const startFromStep = "toOfdaJson";
-// const startFromStep = null;
+// const startFromStep = "toOfdaJson";
+const startFromStep = null;
 // Run the pipeline
 runPipeline(startFromStep).catch((err) => {
   console.error('Pipeline failed:', err);
