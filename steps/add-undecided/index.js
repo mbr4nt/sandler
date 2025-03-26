@@ -35,7 +35,7 @@ module.exports = async function addUndecided(inputDir, outputDir) {
     let undecidedOption = {
         "code": "~",
         "description": "Undecided",
-        "material": "undecided"
+        "material": "~"
     }
 
     //save undecided.json in materials folder
