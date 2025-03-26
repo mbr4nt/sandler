@@ -15,7 +15,7 @@ const steps = [
 ];
 
 // Define input and output base directories
-const inputDir = path.join(__dirname, 'input');
+const inputDir = path.join(__dirname, 'input', 'products');
 const outputDir = path.join(__dirname, 'output');
 
 // Function to wipe and recreate the output directory

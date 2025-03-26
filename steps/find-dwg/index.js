@@ -4,7 +4,7 @@ const fs = require('fs').promises; // Using fs.promises for async file operation
 
 // Initialize and index files
 const indexer = new DWGIndexer();
-const rootPath = path.join(__dirname, '../../symbols');
+const rootPath = path.join(__dirname, '../../input/symbols');
 indexer.indexFiles(rootPath);
 
 module.exports = async function findDWG(collection, range, product, readFile, writeFile) {
