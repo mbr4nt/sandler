@@ -39,7 +39,11 @@ module.exports = async function addUndecided(inputDir, outputDir) {
     }
 
     //save undecided.json in materials folder
-    fs.writeFileSync(path.join(materialsOutputPath, 'undecided.json'), JSON.stringify(undecidedOption, null, 2));
+    fs.writeFileSync(path.join(materialsOutputPath, 'undecided.json'), JSON.stringify({
+        "code": undecidedOption.code,
+        "uri": "undecided.gm",
+        "description": undecidedOption.description
+    }, null, 2));
 
 
     //loop features

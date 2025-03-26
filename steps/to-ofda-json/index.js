@@ -24,7 +24,11 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
 
                 //if option has material, create a file ${option.material}.json with { "code": option.material }
                 if(option.material) {
-                    await writeOutputFile(`materials/${makeSafeFileName(option.material)}.json`, JSON.stringify({ "code": option.material }, null, 2));
+                    await writeOutputFile(`materials/${makeSafeFileName(option.material)}.json`, JSON.stringify({ 
+                        "code": option.key,
+                        "uri": `${option.material}.gm`,
+                        "description": option.name
+                    }, null, 2));
                 }
             }
 
