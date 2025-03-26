@@ -1,4 +1,6 @@
 const csv = require('csv-parser');
+const fs = require('fs').promises;
+const path = require('path');
 
 module.exports = async function features(collection, range, product, readFile, writeFile) {
     console.log(`Generating features for ${collection}/${range}/${product}`);
@@ -9,32 +11,56 @@ module.exports = async function features(collection, range, product, readFile, w
 
     // Read characteristics.csv
     const characteristics = [];
-
-    // Read the prices.csv file
     const csvStream = (await readFile('characteristics.csv'))
         .toString()
         .split('\n')
-        .filter(line => line.trim() !== '') // Remove empty lines
-        .join('\n'); // Rejoin into a single string
+        .filter(line => line.trim() !== '')
+        .join('\n');
 
     require('stream').Readable.from(csvStream)
         .pipe(csv())
         .on('data', (row) => characteristics.push(row))
         .on('end', async () => {
+            // Load finish data
+            const finishes = await loadFinishData();
+
             // Process the data
-            const features = processCharacteristics(characteristics, upcharges, product);
+            const features = processCharacteristics(characteristics, upcharges, product, finishes);
 
             // Write the output to features.json
             await writeFile('features.json', JSON.stringify(features, null, 2));
             console.log(`Features generated for ${collection}/${range}/${product}`);
 
-            //pass files forward
+            // Pass files forward
             await writeFile('upcharges.json', await readFile('upcharges.json'));
             await writeFile('product_data.csv', await readFile('product_data.csv'));
         });
 };
 
-function processCharacteristics(characteristics, upcharges, product) {
+async function loadFinishData() {
+    const materialsPath = path.join(__dirname, '../../input/materials');
+    const files = await fs.readdir(materialsPath);
+    const finishFile = files.find(file => file.startsWith('Dynamics-Finishes-Export'));
+    if (!finishFile) {
+        console.warn('No finishes file found!');
+        return {};
+    }
+
+    const finishes = {};
+    const filePath = path.join(materialsPath, finishFile);
+    const csvData = await fs.readFile(filePath, 'utf8');
+    require('stream').Readable.from(csvData)
+        .pipe(csv())
+        .on('data', (row) => {
+            finishes[row.FinishShortCode.trim()] = row.FinishFriendlyName.trim();
+        });
+
+    return new Promise((resolve) => {
+        setTimeout(() => resolve(finishes), 500); // Ensure data is fully loaded
+    });
+}
+
+function processCharacteristics(characteristics, upcharges, product, finishes) {
     const featuresMap = new Map();
 
     characteristics.forEach(row => {
@@ -76,11 +102,11 @@ function processCharacteristics(characteristics, upcharges, product) {
         const groupCode = OptionFriendlyName || OptionName;
         const featureOption = {
             key: featureOptionKey,
-            name: `${product}-${groupCode}`,
+            name: `${groupCode}`,
             groupCode,
             options: FinishShortCodes ? FinishShortCodes.split(',').map(code => ({
                 key: code.trim(),
-                name: getFinishName(code.trim()),
+                name: getFinishName(code.trim(), finishes),
                 material: code.trim()
             })) : []
         };
@@ -92,8 +118,6 @@ function processCharacteristics(characteristics, upcharges, product) {
     return Array.from(featuresMap.values());
 }
 
-function getFinishName(finishCode) {
-    // Placeholder function to get the finish name based on the finish code
-    // You can implement this function based on your requirements
-    return `Finish: ${finishCode}`;
+function getFinishName(finishCode, finishes) {
+    return finishes[finishCode] || `Finish: ${finishCode}`;
 }
