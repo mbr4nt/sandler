@@ -10,6 +10,7 @@ const steps = [
     forEachProduct(require('./steps/log-price-changes')),
     forEachProduct(require('./steps/features')),
     forEachProduct(require('./steps/find-dwg')),
+    forEachProduct(require('./steps/images')),
     forEachProduct(require('./steps/to-encore')),
     require('./steps/to-ofda-json'),
     require('./steps/group-fabrics'),

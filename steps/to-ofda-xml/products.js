@@ -46,6 +46,28 @@ function jsonToXml(json) {
         headless: true,
     });
 
+    // Prepare external references
+    const externalReferences = json.externalReferences.map(ref => ({
+        ExternalReference: {
+            FileURI: ref.fileUri,
+            Usage: {
+                Type: ref.usage.type,
+                Quality: ref.usage.quality,
+            },
+        },
+    }));
+
+    // Prepare features - assuming json.features is an array
+    const features = Array.isArray(json.features) ? 
+        json.features.map((feature, index) => ({
+            $: { Sequence: index + 1 },
+            FeatureRef: feature,
+        })) : 
+        [{
+            $: { Sequence: 1 },
+            FeatureRef: json.features,
+        }];
+
     const xmlObject = {
         Product: {
             Code: json.code,
@@ -57,20 +79,9 @@ function jsonToXml(json) {
                 PriceListRef: json.prices[0].priceList,
                 Value: json.prices[0].value,
             },
-            ProductExternalReference: {
-                ExternalReference: {
-                    FileURI: json.externalReferences[0].fileUri,
-                    Usage: {
-                        Type: json.externalReferences[0].usage.type,
-                        Quality: json.externalReferences[0].usage.quality,
-                    },
-                },
-            },
+            ProductExternalReference: externalReferences,
             MirrorAngleOfSymmetry: 90, // Hardcoded as per example
-            Features: {
-                $: { Sequence: 1 },
-                FeatureRef: json.features,
-            },
+            Features: features,
             ProductPropertyVisibility: 1, // Hardcoded as per example
         },
     };

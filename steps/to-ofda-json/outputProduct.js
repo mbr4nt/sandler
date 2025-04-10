@@ -37,6 +37,13 @@ module.exports = async function (product, outputDir) {
                     type: "3DView",
                     quality: "Medium"
                 }
+            },
+            {
+                fileUri: `${partNumber}.png`,
+                usage: {
+                    type: "NavigationImage",
+                    quality: "Medium"
+                }
             }
         ],
         features: product.features.map(feature => feature.key)
