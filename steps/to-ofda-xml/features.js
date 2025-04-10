@@ -21,7 +21,6 @@ module.exports = async function(context) {
             const feature = JSON.parse(data);
             feature.defaultOption = await getDefaultOption(feature);
             if (!feature.materialApplicationArea) feature.materialApplicationArea = '';
-            console.log('feature:', feature.code);
             xml += await process(template, feature);
             xml += '\n';
         } catch (error) {

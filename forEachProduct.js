@@ -37,7 +37,6 @@ async function processEachProduct(inputDir, outputDir, processor) {
         
                 // Write the file
                 await fs.writeFile(filePath, data, 'utf8');
-                console.log(`File ${fileName} written successfully.`);
             } catch (error) {
                 console.error(`Error writing file ${fileName}:`, error);
                 throw error; // Re-throw the error if you want calling code to handle it

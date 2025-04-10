@@ -46,7 +46,6 @@ module.exports = async function createFolderHierarchy(inputDir, outputDir) {
 
       const newFilePath = path.join(outputPath, newFileName);
       fs.copyFileSync(file, newFilePath);
-      console.log(`Moved: ${file} -> ${newFilePath}`);
     }
   }
 

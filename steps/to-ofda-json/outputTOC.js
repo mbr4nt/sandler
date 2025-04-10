@@ -57,8 +57,6 @@ function arrayToHierarchyYaml(data) {
 
 module.exports = async function(toc, outputDir) {
 
-    console.log(toc);
-
     async function writeOutputFile(fileName, data) {
         try {
             const filePath = path.join(outputDir, fileName);

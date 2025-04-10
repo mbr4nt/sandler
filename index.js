@@ -5,6 +5,7 @@ const forEachProduct = require('./forEachProduct.js');
 // Import all steps from the "steps" folder
 const steps = [
     require('./steps/create-folder-hierarchy'),
+    forEachProduct(require('./steps/basic-validation')),
     forEachProduct(require('./steps/calculate-upcharges')),
     forEachProduct(require('./steps/log-price-changes')),
     forEachProduct(require('./steps/features')),

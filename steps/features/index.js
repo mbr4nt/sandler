@@ -3,7 +3,6 @@ const fs = require('fs').promises;
 const path = require('path');
 
 module.exports = async function features(collection, range, product, readFile, writeFile) {
-    console.log(`Generating features for ${collection}/${range}/${product}`);
 
     // Read upcharges.json
     const upchargesData = JSON.parse(await readFile('upcharges.json'));
@@ -29,7 +28,6 @@ module.exports = async function features(collection, range, product, readFile, w
 
             // Write the output to features.json
             await writeFile('features.json', JSON.stringify(features, null, 2));
-            console.log(`Features generated for ${collection}/${range}/${product}`);
 
             // Pass files forward
             await writeFile('upcharges.json', await readFile('upcharges.json'));
@@ -98,12 +96,11 @@ function processCharacteristics(characteristics, upcharges, product, finishes) {
             features: []
         };
 
-        const featureOptionKey = `${product}-${CharacteristicShortCode}-${OptionShortCode}`;
+        const featureOptionKey = `${CharacteristicShortCode}-${OptionShortCode}`;
         const groupCode = OptionFriendlyName || OptionName;
         const featureOption = {
             key: featureOptionKey,
             name: `${groupCode}`,
-            groupCode,
             options: FinishShortCodes ? FinishShortCodes.split(',').map(code => ({
                 key: code.trim(),
                 name: getFinishName(code.trim(), finishes),

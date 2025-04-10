@@ -12,7 +12,6 @@
 const csv = require('csv-parser');
 
 module.exports = async function logPriceChanges(collection, range, product, readFile, writeFile) {
-    console.log(`Recalculating prices for ${collection}/${range}/${product}`);
 
     // Read the upcharges.json file
     const upchargesData = JSON.parse(await readFile('upcharges.json'));
@@ -71,9 +70,6 @@ module.exports = async function logPriceChanges(collection, range, product, read
         ].join('\n');
 
         await writeFile('price-updates.csv', csvContent);
-        console.log(`Price updates written to price-updates.csv`);
-    } else {
-        console.log('No price changes detected.');
     }
 
     //pass files forward
