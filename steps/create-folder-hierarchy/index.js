@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const csv = require('csv-parser');
+const log = require('../../log.js');
+
 
 module.exports = async function createFolderHierarchy(inputDir, outputDir) {
   // Read all files from the input directory (including subdirectories)
@@ -13,14 +15,14 @@ module.exports = async function createFolderHierarchy(inputDir, outputDir) {
   for (const group of fileGroups) {
     const productDataFile = group.find(file => file.toLowerCase().includes('_product_data.csv'));
     if (!productDataFile) {
-      console.warn(`No product_data.csv found for group: ${group.join(', ')}`);
+      log(`No product_data.csv found for group: ${group.join(', ')}`);
       continue;
     }
 
     // Extract product information from product_data.csv
     const productInfo = await extractProductInfo(productDataFile);
     if (!productInfo) {
-      console.warn(`Failed to extract product info from: ${productDataFile}`);
+      log(`Failed to extract product info from: ${productDataFile}`);
       continue;
     }
 
@@ -40,7 +42,7 @@ module.exports = async function createFolderHierarchy(inputDir, outputDir) {
       } else if (fileName.includes('_characteristics.csv')) {
         newFileName = 'characteristics.csv';
       } else {
-        console.warn(`Unexpected file in group: ${file}`);
+        log(`Unexpected file in group: ${file}`);
         continue;
       }
 

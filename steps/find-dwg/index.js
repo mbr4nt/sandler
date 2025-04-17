@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs').promises; // Using fs.promises for async file operations
 const log = require('../../log.js');
+const buildMap = require('./buildMap.js'); // Import the buildMap function
 
 // Initialize and index files
 const dwgInputFolder = path.join(__dirname, '../../input/symbols');
@@ -8,10 +9,30 @@ const mapPath = path.join(dwgInputFolder, 'map.json');
 let map = null;
 
 
+
 module.exports = async function findDWG(collection, range, product, readFile, writeFile) {
     if(!map) {
         const mapText = await fs.readFile(mapPath, 'utf8');
         map = JSON.parse(mapText);
+
+        // let newMap = await buildMap();
+        // //merge newMap into map
+        // for (const key in newMap) {
+        //     if (newMap.hasOwnProperty(key)) {
+        //         map[key] = newMap[key];
+        //     }
+        // }
+    }
+
+    //write map to ../output/symbols/map.json
+    const mapOutputFolder = path.join(__dirname, '../../output/symbols');
+    const mapOutputPath = path.join(mapOutputFolder, 'map.json');
+    try {
+        await fs.mkdir(mapOutputFolder, { recursive: true });
+        await fs.writeFile(mapOutputPath, JSON.stringify(map, null, 2));
+    } catch (err) {
+        console.error(`Error creating map output folder: ${err}`);
+        throw err; // Re-throw the error to stop execution if the folder cannot be created
     }
 
     // Find best matches for a product name

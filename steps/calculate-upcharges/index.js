@@ -34,7 +34,7 @@ module.exports = async function calculateUpcharges(collection, range, product, r
         .on('end', async () => {
 
             if (prices.length == 0) {
-                log(`No prices found for ${collection}/${range}/${product}.`);
+                log(`No prices found for ${product}.`);
             } else {
 
 

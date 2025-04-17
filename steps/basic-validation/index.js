@@ -1,10 +1,22 @@
 const log = require('../../log.js');
 
+async function isValidCSVString(csvString) {
+    //check if the text contains the string "data available"
+    if (csvString.includes('data available')) {
+        return false;
+    }
+    return true;
+  }
+
 module.exports = async function basicValidation(collection, range, product, readFile, writeFile) {
     
     const tryOpen = async (filePath) => {
         try {
             const data = await readFile(filePath);
+            if(!await isValidCSVString(data)) {
+                log(`File ${filePath} for product ${product} is not a valid CSV file. contents: ${data}`);
+                return null;
+            }
             return data;
         }
         catch (error) {
