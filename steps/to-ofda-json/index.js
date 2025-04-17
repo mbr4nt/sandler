@@ -59,9 +59,16 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
         }
     }
 
+    const filesWeKnowExist = [];
+
     async function writeOutputFile(fileName, data) {
         try {
             const filePath = path.join(outputDir, fileName);
+            //if the file already exists, do nothing
+            if (filesWeKnowExist.includes(fileName)) {
+                return;
+            }
+
             const dirPath = path.dirname(filePath); // Get the directory path
 
             // Create the directory if it doesn't exist
@@ -69,6 +76,7 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
 
             // Write the file
             await fs.writeFile(filePath, data, 'utf8');
+            filesWeKnowExist.push(fileName); // Add the file name to the list of known files
         } catch (error) {
             console.error(`Error writing file ${fileName}:`, error);
             throw error; // Re-throw the error if you want calling code to handle it
