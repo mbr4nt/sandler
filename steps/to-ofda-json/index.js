@@ -38,7 +38,7 @@ module.exports = async function toOfdaJson(inputDir, outputDir) {
                 "groupCode": feature.groupCode,
                 "options": formatOptions(feature)
             };
-            if(feature.upchage) {
+            if(feature.upcharge) {
                 featureOutput.upcharges = [
                     {
                         "priceList": "P1",
