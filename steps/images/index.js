@@ -1,14 +1,14 @@
 const path = require('path');
 const fs = require('fs').promises;
 const log = require('../../log.js');
-const csv = require('csv-parser'); // You'll need to install this package
+const resize = require('./resize.js');
 
 // Initialize and index files
 const imageInputFolder = path.join(__dirname, '../../input/images');
 const mapPath = path.join(imageInputFolder, 'map.csv');
 let map = null;
 
-module.exports = async function findDWG(collection, range, product, readFile, writeFile) {
+module.exports = async function images(collection, range, product, readFile, writeFile) {
     if(!map) {
         // Read and parse the CSV file
         const csvData = await fs.readFile(mapPath, 'utf8');
@@ -38,10 +38,12 @@ module.exports = async function findDWG(collection, range, product, readFile, wr
     }
     else {
         const imageOutputFolder = path.join(__dirname, '../../output/images');
+        const thumbnailOutputFolder = path.join(__dirname, '../../output/images/thumbnails');
 
         // Ensure the output folder exists
         try {
             await fs.mkdir(imageOutputFolder, { recursive: true });
+            await fs.mkdir(thumbnailOutputFolder, { recursive: true });
         } catch (err) {
             console.error(`Error creating output folder: ${err}`);
             throw err;
@@ -56,6 +58,12 @@ module.exports = async function findDWG(collection, range, product, readFile, wr
 
             // Write the contents to the output file
             await fs.writeFile(outputFilePath, data);
+
+            //save small size
+            await resize(outputFilePath, path.join(thumbnailOutputFolder, `${makeSafeFileName(product)}.png`), {
+                width: 56,
+                height: 56
+            });
 
         } catch (err) {
             log(`No image found for product: ${product}`);

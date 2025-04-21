@@ -34,7 +34,7 @@ module.exports = async function (product, outputDir) {
             {
                 fileUri: product.geometry.fileName,
                 usage: {
-                    type: "3DView",
+                    type: "3DAndPlanView",
                     quality: "Medium"
                 }
             },
