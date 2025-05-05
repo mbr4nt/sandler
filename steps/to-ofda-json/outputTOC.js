@@ -34,8 +34,17 @@ function sortTree(tree) {
         if (typeof tree[key] === 'object' && !tree[key].partNumbers) {
             sortedTree[key] = sortTree(tree[key]);
         } else {
-            // If partNumbers exists, replace the object with the array directly
-            sortedTree[key] = tree[key].partNumbers;
+            // Sort the partNumbers, pushing TROLLEY items (case-insensitive) to the end
+            const sortedPartNumbers = [...tree[key].partNumbers].sort((a, b) => {
+                const aIsTrolley = a.toLowerCase().includes('trolley');
+                const bIsTrolley = b.toLowerCase().includes('trolley');
+                
+                if (aIsTrolley && !bIsTrolley) return 1;  // a comes after b
+                if (!aIsTrolley && bIsTrolley) return -1;  // a comes before b
+                if (aIsTrolley && bIsTrolley) return a.localeCompare(b); // both are trolley, sort alphabetically
+                return a.localeCompare(b); // neither is trolley, sort alphabetically
+            });
+            sortedTree[key] = sortedPartNumbers;
         }
     });
     return sortedTree;
@@ -45,7 +54,7 @@ function arrayToHierarchyYaml(data) {
     // Build the tree
     const tree = buildTree(data);
 
-    // Sort the tree alphabetically
+    // Sort the tree with TROLLEY items (case-insensitive) last
     const sortedTree = sortTree(tree);
 
     // Convert the sorted tree to YAML
@@ -54,9 +63,7 @@ function arrayToHierarchyYaml(data) {
     return yamlString;
 }
 
-
 module.exports = async function(toc, outputDir) {
-
     async function writeOutputFile(fileName, data) {
         try {
             const filePath = path.join(outputDir, fileName);
@@ -73,11 +80,8 @@ module.exports = async function(toc, outputDir) {
         }
     }
 
-    tocYaml = arrayToHierarchyYaml(toc);
+    const tocYaml = arrayToHierarchyYaml(toc);
 
     //save to product file in outputDir/products/safeName(partNumber).json
     await writeOutputFile(`tableOfContents.yaml`, tocYaml);
 }
-
-
-

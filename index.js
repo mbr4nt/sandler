@@ -16,6 +16,7 @@ const steps = [
     require('./steps/group-fabrics'),
     require('./steps/add-undecided'),
     require('./steps/application-areas'),
+    require('./steps/categorization'),
     require('./steps/to-ofda-xml'),
 ];
 
@@ -89,8 +90,8 @@ async function runPipeline(startFromStep) {
   console.log('Pipeline completed successfully!');
 }
 
-// const startFromStep = "toOfdaJson";
-const startFromStep = null;
+const startFromStep = "categorization";
+//const startFromStep = null;
 // Run the pipeline
 runPipeline(startFromStep).catch((err) => {
   console.error('Pipeline failed:', err);

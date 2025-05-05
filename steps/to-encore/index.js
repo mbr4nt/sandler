@@ -120,7 +120,7 @@ function extractProductProps(product) {
 }
 
 function createGeometry(partNumber) {
-  return { fileName: `${makeSafeFileName(partNumber)}.cm3d`, layers: [] };
+  return { fileName: `${makeSafeFileName(partNumber)}.cmsym`, layers: [] };
 }
 
 function makeSafeFileName(input) {
